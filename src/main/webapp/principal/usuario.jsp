@@ -190,62 +190,85 @@
 		}
 	}*/
 	
-	function buscarUsuario() {
-	    
-	    var nomeBusca = document.getElementById('nomeBusca').value;
-	    
-	    if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
+	function verEditar(id) {
 		
-		 var urlAction = document.getElementById('formUser').action;
-		
-		 $.ajax({
-		     
-		     method: "get",
-		     url : urlAction,
-		     data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
-		     success: function (response) {
-		    	 
-		    	var json = JSON.parse(response);
-			  	
-		    	$('#tabelaresultados > tbody > tr').remove;
-		    	//
-		    	for(var p = 0; p < json.length; p++){
-		    		$('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td>'+json[p].nome+'</td> <td>'+json[p].email+'</td> <td><button type="button" class="btn btn-info" onclick="verEditar">Ver</button></td> </tr>');
-		    	}
-		    	
-		    	document.getElementById('totalResultado').textContent = 'Usuários:' + json.length;
-			 
-		     }
-		     
-		 }).fail(function(xhr, status, errorThrown){
-		    alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
-		 });
-		
-		
-	    }
-	    
-	}
-	
-	function criarDelete(){
-		
-		if(confirm('Deseja realmente excluir o usuário(a) ?')){
-			
-			document.getElementById("formUser").method = 'get';
-			document.getElementById("acao").value = 'deletar';
-			document.getElementById("formUser").submit();
-		
+		var urlAction = document.getElementById('formUser').action;
+		window.location.href = urlAction + '?acao=buscarEditar&id='+id;
+
 		}
-	}
-	
-	function limparform() {
-		
-		//document.getElementById("formUser")..reset;
-		
-		var elementos = document.getElementById("formUser").elements; /*Retorna os elementos html dentro do formulario*/
-		for (p = 0; p < elementos.length; p ++){
-			elementos[p].value = '';
-		}	
-	}
+
+		function buscarUsuario() {
+
+			var nomeBusca = document.getElementById('nomeBusca').value;
+
+			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') { /*Validando que tem que ter valor pra buscar no banco*/
+
+				var urlAction = document.getElementById('formUser').action;
+
+				$
+						.ajax(
+								{
+
+									method : "get",
+									url : urlAction,
+									data : "nomeBusca=" + nomeBusca
+											+ '&acao=buscarUserAjax',
+									success : function(response) {
+
+										var json = JSON.parse(response);
+
+										$('#tabelaresultados > tbody > tr').remove;
+										//
+										for (var p = 0; p < json.length; p++) {
+											$('#tabelaresultados > tbody')
+													.append(
+															'<tr> <td>'
+																	+ json[p].id
+																	+ '</td> <td>'
+																	+ json[p].nome
+																	+ '</td> <td>'
+																	+ json[p].email
+																	+ '</td> <td><button type="button" class="btn btn-info" onclick="verEditar('
+																	+ json[p].id
+																	+ ');">Ver</button></td> </tr>');
+										}
+
+										document
+												.getElementById('totalResultado').textContent = 'Usuários:'
+												+ json.length;
+
+									}
+
+								}).fail(
+								function(xhr, status, errorThrown) {
+									alert('Erro ao buscar usuário por nome: '
+											+ xhr.responseText);
+								});
+
+			}
+
+		}
+
+		function criarDelete() {
+
+			if (confirm('Deseja realmente excluir o usuário(a) ?')) {
+
+				document.getElementById("formUser").method = 'get';
+				document.getElementById("acao").value = 'deletar';
+				document.getElementById("formUser").submit();
+
+			}
+		}
+
+		function limparform() {
+
+			//document.getElementById("formUser")..reset;
+
+			var elementos = document.getElementById("formUser").elements; /*Retorna os elementos html dentro do formulario*/
+			for (p = 0; p < elementos.length; p++) {
+				elementos[p].value = '';
+			}
+		}
 	</script>
 </body>
 </html>
