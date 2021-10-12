@@ -1,8 +1,24 @@
+-- Table: public.model_login
+
+-- DROP TABLE public.model_login;
+
 CREATE TABLE public.model_login
 (
-    login character varying(240)[] COLLATE pg_catalog."default",
-    senha character varying(200)[] COLLATE pg_catalog."default",
-    CONSTRAINT login_unique UNIQUE (login)
+    id integer NOT NULL DEFAULT nextval('model_login_id_seq'::regclass),
+    nome character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    login character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    senha character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    confirmasenha character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    dtnascimento character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    useradmin boolean NOT NULL DEFAULT false,
+    usuario_id bigint NOT NULL DEFAULT 1,
+    CONSTRAINT model_login_pkey PRIMARY KEY (id),
+    CONSTRAINT login_unique UNIQUE (login),
+    CONSTRAINT usuario_fk FOREIGN KEY (usuario_id)
+        REFERENCES public.model_login (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
 )
 WITH (
     OIDS = FALSE
