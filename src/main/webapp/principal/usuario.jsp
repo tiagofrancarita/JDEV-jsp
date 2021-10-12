@@ -110,6 +110,32 @@
 											</div>
 										</div>
 										  <span>${msg}</span>
+										     <div style="height: 300px; overflow: scroll;">
+   												<table class="table" id="tabelaresultadosView">
+  												<thead>
+    												<tr>
+												      <th scope="col">ID</th>
+												      <th scope="col">Nome</th>
+												      <th scope="col">Login</th>
+												      <th scope="col">E-mail</th>
+												      <th scope="col">Data Nascimento</th>
+												      <th scope="col">Ação</th>
+    												</tr>
+												  </thead>
+												  <tbody>
+												    <c:forEach items='${modelLogins}' var='ml'>
+												    	<tr>
+												    	<td><c:out value="${ml.id}"></c:out></td>
+												    	<td><c:out value="${ml.nome}"></c:out></td>
+												    	<td><c:out value="${ml.login}"></c:out></td>
+												    	<td><c:out value="${ml.email}"></c:out></td>
+												    	<td><c:out value="${ml.dtNascimento}"></c:out></td>
+												    	<td><a class="btn btn-success" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+												    	</tr>
+												    </c:forEach>
+												  </tbody>
+												</table>
+												</div>
 									<!--<span id="msg">${msg}</span>-->
 									</div>
 									<!-- Page-body end -->
@@ -162,6 +188,7 @@
 </table>
 
 </div>
+
   <span id="totalResultado"></span> 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>

@@ -106,6 +106,31 @@ public class DaoUsuarioRepository {
 		
 	}
 	
+	public List<ModelLogin> listarUsuario() throws Exception{
+		
+		List<ModelLogin> busca = new ArrayList<ModelLogin>();
+		
+		String sqlBuscarUsuario ="select * from model_login order by id";
+		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
+		
+		
+		ResultSet resultadoBusca = buscar.executeQuery();
+		
+		while(resultadoBusca.next()) {
+			
+			ModelLogin modelologin = new ModelLogin();
+			modelologin.setId(resultadoBusca.getLong("id"));
+			modelologin.setEmail(resultadoBusca.getString("email"));
+			modelologin.setLogin(resultadoBusca.getString("login"));
+			modelologin.setNome(resultadoBusca.getString("nome"));
+			modelologin.setDtNascimento(resultadoBusca.getString("dtNascimento"));
+			
+			busca.add(modelologin);
+			
+			}
+			return busca;
+		}
+	
 	public ModelLogin consultaUsuario (String login) throws Exception {
 		
 		ModelLogin modellogin = new ModelLogin();
@@ -131,7 +156,7 @@ public class DaoUsuarioRepository {
 		
 	}
 	
-public ModelLogin consultaUsuarioID (String id) throws Exception {
+	public ModelLogin consultaUsuarioID (String id) throws Exception {
 		
 		ModelLogin modellogin = new ModelLogin();
 		
