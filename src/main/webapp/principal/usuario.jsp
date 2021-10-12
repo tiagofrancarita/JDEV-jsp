@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	
+	<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +9,8 @@
 <! -- Página referente ao cabeçalho --!>
 <jsp:include page="head.jsp"></jsp:include>
 
-<body>
-
+<body> 
+ 
 	<! -- Página referente ao theme-load --!>
 	<jsp:include page="theme-load.jsp"></jsp:include>
 
@@ -28,7 +30,7 @@
 						<!-- Page-header start -->
 
 						<jsp:include page="page-header.jsp"></jsp:include>
-
+ 
 						<!-- Page-header end -->
 						<div class="pcoded-inner-content">
 							<!-- Main-body start -->
@@ -256,7 +258,6 @@
 				document.getElementById("formUser").method = 'get';
 				document.getElementById("acao").value = 'deletar';
 				document.getElementById("formUser").submit();
-
 			}
 		}
 
@@ -272,4 +273,3 @@
 	</script>
 </body>
 </html>
-
