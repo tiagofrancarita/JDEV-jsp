@@ -43,7 +43,7 @@ public class DaoUsuarioRepository {
 		
 		}else {
 			
-				String sqlUpdate ="UPDATE model_login SET nome=?, login=?, senha=?, confirmasenha=?, email=?, dtnascimento=? WHERE id = "+modellogin.getId()+" ";
+				String sqlUpdate ="UPDATE model_login SET nome=?, login=?, senha=?, confirmasenha=?, email=?, dtnascimento=?, perfil=? WHERE id = "+modellogin.getId()+" ";
 				PreparedStatement preparaSql = connection.prepareStatement(sqlUpdate);
 				
 				preparaSql.setString(1, modellogin.getNome());
@@ -99,6 +99,7 @@ public class DaoUsuarioRepository {
 			modelologin.setEmail(resultadoBusca.getString("email"));
 			modelologin.setLogin(resultadoBusca.getString("login"));
 			modelologin.setNome(resultadoBusca.getString("nome"));
+			modelologin.setPerfil(resultadoBusca.getString("perfil"));
 			
 			busca.add(modelologin);
 			
@@ -128,6 +129,8 @@ public class DaoUsuarioRepository {
 			modelologin.setLogin(resultadoBusca.getString("login"));
 			modelologin.setNome(resultadoBusca.getString("nome"));
 			modelologin.setDtNascimento(resultadoBusca.getString("dtNascimento"));
+			modelologin.setPerfil(resultadoBusca.getString("perfil"));
+			
 			
 			busca.add(modelologin);
 			
@@ -153,6 +156,8 @@ public class DaoUsuarioRepository {
 			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			
 
 		}
 		
@@ -180,6 +185,7 @@ public class DaoUsuarioRepository {
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setUserAdmin(resultadoConsultaUsuario.getBoolean("userAdmin"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			
 
 		}
 		
@@ -205,6 +211,8 @@ public class DaoUsuarioRepository {
 			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			
 
 		}
 		
@@ -216,10 +224,10 @@ public class DaoUsuarioRepository {
 		
 		ModelLogin modellogin = new ModelLogin();
 		
-		String sqlConsultaUsuarioiD = "select * from model_login where id = ?";
+		String sqlConsultaUsuarioiD = "select * from model_login where id = ? and useradmin is false and usuario_id = ?";
 		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuarioiD);
 		preparaSql.setLong(1, Long.parseLong(id));
-		//preparaSql.setLong(2, userLogado);
+		preparaSql.setLong(2, userLogado);
 		
 		ResultSet resultadoConsultaUsuario = preparaSql.executeQuery();
 		
@@ -232,6 +240,7 @@ public class DaoUsuarioRepository {
 			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
 
 		}
 		

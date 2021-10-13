@@ -1,3 +1,4 @@
+<%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 	
@@ -71,10 +72,47 @@
                                                             <div class="form-group form-default form-static-label">
 															    <select class="form-control" name="perfil">
 															      <option disabled="disabled" selected="selected">[Selecione o perfil]</option>
-															      <option value="ADMIN">Admin</option>
-															      <option value="FINANCEIRO">Financeiro</option>
-															      <option value="VENDAS">Vendas</option>
-															      <option value="GERÊNCIA">Gerência</option>
+															      <option value="ADMIN" <%
+															      
+															      ModelLogin modelLogin = (ModelLogin) request.getAttribute("modologin");
+															      if (modelLogin != null  && modelLogin.getPerfil().equals("ADMIN")) {
+															    	  
+															    	  out.println(" ");
+															    	  	out.print("selected=\"selected\"");
+															    	  out.println(" ");
+															    	  
+															      } %> >Admin</option>
+															      <option value="FINANCEIRO"  <% 
+															     
+															      modelLogin = (ModelLogin) request.getAttribute("modologin");
+															      if (modelLogin != null  && modelLogin.getPerfil().equals("FINANCEIRO")){
+															    	  out.println(" ");
+															    	  	out.print("selected=\"selected\"");
+															    	  out.println(" ");
+															    	  
+															      } %>>Financeiro</option>
+															      
+															      <option value="VENDAS"  <% 
+															      
+															      modelLogin = (ModelLogin) request.getAttribute("modologin");
+															      if (modelLogin != null  && modelLogin.getPerfil().equals("VENDAS")){
+															    	  
+															    	  out.println(" ");
+															    	  	out.print("selected=\"selected\"");
+															    	  out.println(" ");
+															    	  
+															      } %>>Vendas</option>
+															      
+															      <option value="GERÊNCIA" <% 
+															      
+															      modelLogin = (ModelLogin) request.getAttribute("modologin");
+															      if (modelLogin != null  && modelLogin.getPerfil().equals("GERÊNCIA")){
+															    	  
+															    	  out.println(" ");
+															    	  	out.print("selected=\"selected\"");
+															    	  out.println(" ");
+															    	  
+															      } %>>Gerência</option>
 															    </select>
 															    <span class="form-bar"></span>
 															    	<label class="float-label" for="exampleFormControlSelect1">Perfil</label>
