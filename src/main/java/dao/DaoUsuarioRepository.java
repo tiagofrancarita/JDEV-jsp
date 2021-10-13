@@ -27,7 +27,7 @@ public class DaoUsuarioRepository {
 		
 			if (modellogin.isNovo()) {
 			
-				String sqlSalvar ="INSERT INTO model_login(nome, login, senha, confirmasenha, email, dtNascimento, usuario_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+				String sqlSalvar ="INSERT INTO model_login(nome, login, senha, confirmasenha, email, dtNascimento, usuario_id, perfil) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 				PreparedStatement preparaSql = connection.prepareStatement(sqlSalvar);
 		
 				preparaSql.setString(1, modellogin.getNome());
@@ -37,6 +37,7 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(5, modellogin.getEmail());
 				preparaSql.setString(6, modellogin.getDtNascimento());
 				preparaSql.setLong(7, userLogado);
+				preparaSql.setString(8, modellogin.getPerfil());
 				preparaSql.execute();
 				connection.commit();
 		
@@ -51,6 +52,7 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(4, modellogin.getConfirmaSenha());
 				preparaSql.setString(5, modellogin.getEmail());
 				preparaSql.setString(6, modellogin.getDtNascimento());
+				preparaSql.setString(7, modellogin.getPerfil());
 				preparaSql.executeUpdate();
 				connection.commit();
 			
@@ -177,6 +179,7 @@ public class DaoUsuarioRepository {
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setUserAdmin(resultadoConsultaUsuario.getBoolean("userAdmin"));
+			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
 
 		}
 		

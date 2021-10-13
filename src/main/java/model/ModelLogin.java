@@ -15,6 +15,9 @@ public class ModelLogin implements Serializable {
 	private String email;
 	private String dtNascimento;
 	private boolean userAdmin;
+	private String perfil;
+	
+	
 	
 	
 	
@@ -47,6 +50,15 @@ public class ModelLogin implements Serializable {
 	}
 	
 	
+	
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
 	public void setUserAdmin(boolean userAdmin) {
 		this.userAdmin = userAdmin;
 	}

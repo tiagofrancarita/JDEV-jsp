@@ -67,6 +67,18 @@
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Username:</label>
                                                             </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+															    <select class="form-control" name="perfil">
+															      <option disabled="disabled" selected="selected">[Selecione o perfil]</option>
+															      <option value="ADMIN">Admin</option>
+															      <option value="FINANCEIRO">Financeiro</option>
+															      <option value="VENDAS">Vendas</option>
+															      <option value="GERÊNCIA">Gerência</option>
+															    </select>
+															    <span class="form-bar"></span>
+															    	<label class="float-label" for="exampleFormControlSelect1">Perfil</label>
+															  </div>
 															
 															<div class="form-group form-default form-static-label">
 														       <input type="password" name="senha" id="senha" class="form-control" placeholder="Senha" required="required" autocomplete="off" value="${modologin.senha}">
@@ -91,6 +103,8 @@
                                                                 <span class="form-bar"></span>
                                                                 <label class="float-label">Data de Nascimento:</label>
                                                             </div>
+                                                            
+                                                            
                                                             
                                                            	<div class="card-block" align="center">
 													            <!-- button Rounded -->

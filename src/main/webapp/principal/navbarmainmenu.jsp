@@ -2,7 +2,8 @@
     pageEncoding="ISO-8859-1"%>
     
     <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-    <c:set scope="session" var="isAdmin" value='<%= request.getSession().getAttribute("isAdmin").toString() %>' ></c:set>
+    
+    <c:set scope="session" var="perfil" value='<%= request.getSession().getAttribute("perfil").toString() %>' ></c:set>
     
 <!-- navbarmainmenu.jsp -->
 
@@ -14,6 +15,7 @@
                                   <img class="img-80 img-radius" src="<%= request.getContextPath() %>/assets/images/avatar-4.jpg" alt="User-Profile-Image">
                                   <div class="user-details">
                                       <span id="more-details"><%= session.getAttribute("nomeUsuario") %><i class="fa fa-caret-down"></i></span>
+                                      <span id="more-perfil"><%= session.getAttribute("perfil") %><i class="fa fa-caret"></i></span>
                                   </div>
                               </div>
         
@@ -53,7 +55,7 @@
                                   </a>
                                   
                                   <ul class="pcoded-submenu">
-                                  <c:if test="${isAdmin}">
+                                  <c:if test="${perfil == 'ADMIN'}">
                                       <li class=" ">
                                           <a href="<%= request.getContextPath() %>/ServletUsuarioController?acao=listarUser" class="waves-effect waves-dark">
                                               <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

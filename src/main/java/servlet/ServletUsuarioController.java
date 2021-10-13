@@ -122,6 +122,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		String confirmaSenha = request.getParameter("confirmaSenha");
 		String email = request.getParameter("email");
 		String dtNascimento = request.getParameter("dtNascimento");
+		String perfil = request.getParameter("perfil");
 		
 		ModelLogin modellogin = new ModelLogin();
 		
@@ -133,6 +134,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		modellogin.setConfirmaSenha(confirmaSenha);
 		modellogin.setEmail(email);
 		modellogin.setDtNascimento(dtNascimento);
+		modellogin.setPerfil(perfil);
 		
 			if (daoUsuarioRepository.validaLogin(modellogin.getLogin()) && modellogin.getId() == null) {
 				mensagem = "Já existe um usuário(a) com este login, favor tentar o cadastro com um novo login.";

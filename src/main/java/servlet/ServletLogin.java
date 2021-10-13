@@ -88,7 +88,7 @@ public class ServletLogin extends HttpServlet {
 
 					request.getSession().setAttribute("usuario", modellogin.getLogin());
 					request.getSession().setAttribute("nomeUsuario", modellogin.getNome());
-					request.getSession().setAttribute("isAdmin", modellogin.getUserAdmin());
+					request.getSession().setAttribute("perfil", modellogin.getPerfil());
 					
 					
 					
