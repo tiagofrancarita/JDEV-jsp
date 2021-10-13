@@ -14,6 +14,10 @@ public class ModelLogin implements Serializable {
 	private String confirmaSenha;
 	private String email;
 	private String dtNascimento;
+	private boolean userAdmin;
+	
+	
+	
 	
 	
 	public boolean isNovo() {
@@ -42,6 +46,14 @@ public class ModelLogin implements Serializable {
 		
 	}
 	
+	
+	public void setUserAdmin(boolean userAdmin) {
+		this.userAdmin = userAdmin;
+	}
+	
+	public boolean getUserAdmin() {
+		return userAdmin;
+	}
 	
 	public Long getId() {
 		return id;

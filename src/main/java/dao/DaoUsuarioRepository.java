@@ -83,10 +83,10 @@ public class DaoUsuarioRepository {
 		
 		List<ModelLogin> busca = new ArrayList<ModelLogin>();
 		
-		String sqlBuscarUsuario ="select * from model_login where upper(nome)  like upper(?) and useradmin is false";
+		String sqlBuscarUsuario ="select * from model_login where upper(nome)  like upper(?) and useradmin is false and usuario_id = ?";
 		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
 		buscar.setString(1,"%" + nome +"%");
-		//buscar.setLong(2, userLogado);
+		buscar.setLong(2, userLogado);
 		
 		ResultSet resultadoBusca = buscar.executeQuery();
 		
@@ -176,6 +176,7 @@ public class DaoUsuarioRepository {
 			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modellogin.setUserAdmin(resultadoConsultaUsuario.getBoolean("userAdmin"));
 
 		}
 		
