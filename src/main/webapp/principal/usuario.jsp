@@ -47,10 +47,19 @@
 													<div class="card-block">
 													<h3 class="sub-title" align="center">Cadastro de Usuários</h3>
 													
-														<form class="form-material" action="<%=request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser">
+														<form class="form-material" action="<%=request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" enctype="multipart/form-data">
 														
 															<input type="hidden" id="acao" name="acao" value="">
-														
+															
+															<div class="form-group form-default input-group mb-3">
+																<div class="input-group-prepend">
+																	<img alt="Imagem Usuario" src="D:\Dados\Repo\curso-jsp\JDEV-jsp\img" width="70px">
+																</div>
+																<input type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
+																
+																
+															</div>
+															
 															 <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="id" id="id" class="form-control" placeholder="id"  readonly="readonly" value="${modologin.id}">
                                                                 <span class="form-bar"></span>
