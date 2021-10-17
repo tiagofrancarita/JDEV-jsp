@@ -142,7 +142,29 @@
                                                                 <label class="float-label">Data de Nascimento:</label>
                                                             </div>
                                                             
-                                                            
+                                                            <div class="form-group form-default form-static-label">
+														       <input type="radio" name="situacao" checked="checked" value="A"
+																 <%
+                                                             		modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+                                                                 
+                                                             		if (modelLogin != null && modelLogin.getSituacao().equals("A")) {
+																		out.print(" ");
+																	 	out.print("checked=\"checked\"");
+																		out.print(" ");}
+                                                             		 %>>Ativo</>
+															    	
+														       <input type="radio" name="situacao" value="I"
+														       <%
+														       		modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+	                                                             	if (modelLogin != null && modelLogin.getSituacao().equals("I")) {
+																		out.print(" ");
+																		out.print("checked=\"checked\"");
+																		out.print(" ");
+																} %>>Inativo</>
+														       
+														       <label class="float-label">Situação:</label>
+														       <span class="form-bar"></span>
+                                                            </div>
                                                             
                                                            	<div class="card-block" align="center">
 													            <!-- button Rounded -->

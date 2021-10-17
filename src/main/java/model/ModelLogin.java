@@ -16,12 +16,7 @@ public class ModelLogin implements Serializable {
 	private String dtNascimento;
 	private boolean userAdmin;
 	private String perfil;
-	
-	
-	
-	
-	
-	
+	private String situacao;
 	
 	public boolean isNovo() {
 		
@@ -51,6 +46,14 @@ public class ModelLogin implements Serializable {
 	
 	
 	
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
+	}
+
 	public String getPerfil() {
 		return perfil;
 	}

@@ -27,7 +27,7 @@ public class DaoUsuarioRepository {
 		
 			if (modellogin.isNovo()) {
 			
-				String sqlSalvar ="INSERT INTO model_login(nome, login, senha, confirmasenha, email, dtNascimento, usuario_id, perfil) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+				String sqlSalvar ="INSERT INTO model_login(nome, login, senha, confirmasenha, email, dtNascimento, usuario_id, perfil, situacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				PreparedStatement preparaSql = connection.prepareStatement(sqlSalvar);
 		
 				preparaSql.setString(1, modellogin.getNome());
@@ -38,12 +38,13 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(6, modellogin.getDtNascimento());
 				preparaSql.setLong(7, userLogado);
 				preparaSql.setString(8, modellogin.getPerfil());
+				preparaSql.setString(9, modellogin.getSituacao());
 				preparaSql.execute();
 				connection.commit();
 		
 		}else {
 			
-				String sqlUpdate ="UPDATE model_login SET nome=?, login=?, senha=?, confirmasenha=?, email=?, dtnascimento=?, perfil=? WHERE id = "+modellogin.getId()+" ";
+				String sqlUpdate ="UPDATE model_login SET nome=?, login=?, senha=?, confirmasenha=?, email=?, dtnascimento=?, perfil=?, situacao=? WHERE id = "+modellogin.getId()+" ";
 				PreparedStatement preparaSql = connection.prepareStatement(sqlUpdate);
 				
 				preparaSql.setString(1, modellogin.getNome());
@@ -53,6 +54,7 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(5, modellogin.getEmail());
 				preparaSql.setString(6, modellogin.getDtNascimento());
 				preparaSql.setString(7, modellogin.getPerfil());
+				preparaSql.setString(8, modellogin.getSituacao());
 				preparaSql.executeUpdate();
 				connection.commit();
 			
@@ -100,6 +102,7 @@ public class DaoUsuarioRepository {
 			modelologin.setLogin(resultadoBusca.getString("login"));
 			modelologin.setNome(resultadoBusca.getString("nome"));
 			modelologin.setPerfil(resultadoBusca.getString("perfil"));
+			modelologin.setSituacao(resultadoBusca.getString("situacao"));
 			
 			busca.add(modelologin);
 			
@@ -130,7 +133,7 @@ public class DaoUsuarioRepository {
 			modelologin.setNome(resultadoBusca.getString("nome"));
 			modelologin.setDtNascimento(resultadoBusca.getString("dtNascimento"));
 			modelologin.setPerfil(resultadoBusca.getString("perfil"));
-			
+			modelologin.setSituacao(resultadoBusca.getString("situacao"));
 			
 			busca.add(modelologin);
 			
@@ -157,7 +160,7 @@ public class DaoUsuarioRepository {
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
-			
+			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
 
 		}
 		
@@ -169,7 +172,7 @@ public class DaoUsuarioRepository {
 		
 		ModelLogin modellogin = new ModelLogin();
 		
-		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"')";
+		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') ";
 		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuario);
 		
 		ResultSet resultadoConsultaUsuario = preparaSql.executeQuery();
@@ -185,7 +188,7 @@ public class DaoUsuarioRepository {
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setUserAdmin(resultadoConsultaUsuario.getBoolean("userAdmin"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
-			
+			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
 
 		}
 		
@@ -212,7 +215,7 @@ public class DaoUsuarioRepository {
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
-			
+			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
 
 		}
 		
@@ -241,6 +244,7 @@ public class DaoUsuarioRepository {
 			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
 
 		}
 		

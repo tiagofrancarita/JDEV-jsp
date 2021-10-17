@@ -89,17 +89,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				 
 			 }
-			 
-			 
 			 else {
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.listarUsuario(super.getUserLogado(request));
 				 request.setAttribute("modelLogins", modelLogins);
 				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			 }
-			 
 			
-			 
-			 
 			}catch (Exception e) {
 				e.printStackTrace();
 				RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
@@ -123,6 +118,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		String email = request.getParameter("email");
 		String dtNascimento = request.getParameter("dtNascimento");
 		String perfil = request.getParameter("perfil");
+		String situacao = request.getParameter("situacao");
 		
 		ModelLogin modellogin = new ModelLogin();
 		
@@ -135,6 +131,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		modellogin.setEmail(email);
 		modellogin.setDtNascimento(dtNascimento);
 		modellogin.setPerfil(perfil);
+		modellogin.setSituacao(situacao);
 		
 			if (daoUsuarioRepository.validaLogin(modellogin.getLogin()) && modellogin.getId() == null) {
 				mensagem = "Já existe um usuário(a) com este login, favor tentar o cadastro com um novo login.";
