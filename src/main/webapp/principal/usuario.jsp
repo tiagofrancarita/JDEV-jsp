@@ -53,11 +53,9 @@
 															
 															<div class="form-group form-default input-group mb-3">
 																<div class="input-group-prepend">
-																	<img alt="Imagem Usuario" src="D:\Dados\Repo\curso-jsp\JDEV-jsp\img" width="70px">
+																	<img name="fotoEmBase64" id="fotoEmBase64" alt="Imagem Usuario" src="" width="70px">
 																</div>
-																<input type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
-																
-																
+																<input id="fileFoto" name="fileFoto" onchange="visualizarImg('fotoEmBase64', 'fileFoto');" accept="image/*" type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
 															</div>
 															
 															 <div class="form-group form-default form-static-label">
@@ -301,6 +299,25 @@
 			});
 		}
 	}*/
+	
+	function visualizarImg(fotoEmBase64, fileFoto){
+		
+		var preview = document.getElementById(fotoEmBase64);
+		var fileUser = document.getElementById(fileFoto).files[0];
+		var reader = new FileReader();
+		
+		reader.onloadend = function(){
+			preview.src = reader.result;
+		};
+		
+		if(fileUser){
+			reader.readAsDataURL(fileUser);
+			
+		}else{
+			
+			preview.src = '';
+		}
+	}
 	
 	function verEditar(id) {
 		
