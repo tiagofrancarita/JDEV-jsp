@@ -152,7 +152,8 @@
                                                             <div class="form-group form-default form-static-label">
 														       <input type="radio" name="situacao" checked="checked" value="A"
 																 <%
-                                                             		modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+																 
+																 modelLogin = (ModelLogin) request.getAttribute("modologin");
                                                                  
                                                              		if (modelLogin != null && modelLogin.getSituacao().equals("A")) {
 																		out.print(" ");
@@ -162,7 +163,7 @@
 															    	
 														       <input type="radio" name="situacao" value="I"
 														       <%
-														       		modelLogin = (ModelLogin) request.getAttribute("modolLogin");
+														       	modelLogin = (ModelLogin) request.getAttribute("modologin");
 	                                                             	if (modelLogin != null && modelLogin.getSituacao().equals("I")) {
 																		out.print(" ");
 																		out.print("checked=\"checked\"");
