@@ -128,8 +128,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		
 		ModelLogin modellogin = new ModelLogin();
 		
-		//modellogin.setId(id != null && !id.isEmpty() ? Long.parseLong(id) : null);
-		modellogin.setId(id == "" || id == null ? null : Long.parseLong(id));
+		modellogin.setId(id != null && !id.isEmpty() ? Long.parseLong(id) : null);
+		//modellogin.setId(id == "" || id == null ? null : Long.parseLong(id));
 		modellogin.setNome(nome);
 		modellogin.setLogin(login);
 		modellogin.setSenha(senha);
@@ -140,10 +140,16 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		modellogin.setSituacao(situacao);
 		
 		if (ServletFileUpload.isMultipartContent(request)) {
-			Part part = request.getPart("fileFoto");
-			byte[] foto = IOUtils.toByteArray(part.getInputStream()); // converte img para byte
-			String imagemEmBase64 = new Base64().encodeBase64String(foto);
-			System.out.println(imagemEmBase64);
+			
+			Part part = request.getPart("fileFoto"); /*Pega foto da tela*/
+			
+			if (part.getSize() > 0) {
+				byte[] foto = IOUtils.toByteArray(part.getInputStream()); /*Converte imagem para byte*/
+				String imagembase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," +  new Base64().encodeBase64String(foto);
+				
+				modellogin.setFotoUser(imagembase64);
+				modellogin.setExtensaoFotoUser(part.getContentType().split("\\/")[1]);
+			}
 			
 		}
 		

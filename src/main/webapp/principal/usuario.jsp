@@ -53,9 +53,17 @@
 															
 															<div class="form-group form-default input-group mb-3">
 																<div class="input-group-prepend">
-																	<img name="fotoEmBase64" id="fotoEmBase64" alt="Imagem Usuario" src="" width="70px">
+																	<c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
+																		<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modologin.id}">
+																		<img  id="fotoembase64" alt="Imagem Usuario" src="${modolLogin.fotouser}" width="70px">
+																		</a>
+																	</c:if>
+																
+																	<c:if test="${modolLogin.fotouser == '' || modolLogin.fotouser == null}">
+																		<img alt="Imagem User" id="fotoembase64"  src="assets/images/user.png" width="70px">
+																	</c:if>
 																</div>
-																<input id="fileFoto" name="fileFoto" onchange="visualizarImg('fotoEmBase64', 'fileFoto');" accept="image/*" type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
+																<input id="filefoto" name="filefoto"  onchange="visualizarImg('fotoembase64', 'filefoto');" accept="image/*" type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
 															</div>
 															
 															 <div class="form-group form-default form-static-label">
@@ -301,18 +309,18 @@
 		}
 	}*/
 	
-	function visualizarImg(fotoEmBase64, fileFoto){
+	function visualizarImg(fotoembase64, filefoto){
 		
-		var preview = document.getElementById(fotoEmBase64);
-		var fileUser = document.getElementById(fileFoto).files[0];
+		var preview = document.getElementById(fotoembase64); /*Campo img html */
+		var fileuser = document.getElementById(filefoto).files[0];
 		var reader = new FileReader();
 		
 		reader.onloadend = function(){
-			preview.src = reader.result;
+			preview.src = reader.result;/*Carrega foto na tela */
 		};
 		
-		if(fileUser){
-			reader.readAsDataURL(fileUser);
+		if(fileuser){
+			reader.readAsDataURL(fileuser);/*Preview da img */
 			
 		}else{
 			

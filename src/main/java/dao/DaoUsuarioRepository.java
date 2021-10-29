@@ -39,8 +39,23 @@ public class DaoUsuarioRepository {
 				preparaSql.setLong(7, userLogado);
 				preparaSql.setString(8, modellogin.getPerfil());
 				preparaSql.setString(9, modellogin.getSituacao());
+				
 				preparaSql.execute();
 				connection.commit();
+				
+				if (modellogin.getFotoUser() != null && !modellogin.getFotoUser().isEmpty()) {
+					sqlSalvar = "update model_login set fotouser =?, extensaofotouser=? where login =?";
+					
+					preparaSql = connection.prepareStatement(sqlSalvar);
+					
+					preparaSql.setString(1, modellogin.getFotoUser());
+					preparaSql.setString(2, modellogin.getExtensaoFotoUser());
+					preparaSql.setString(3, modellogin.getLogin());
+					
+					preparaSql.execute();
+					
+					connection.commit();
+				}
 		
 		}else {
 			
@@ -55,11 +70,26 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(6, modellogin.getDtNascimento());
 				preparaSql.setString(7, modellogin.getPerfil());
 				preparaSql.setString(8, modellogin.getSituacao());
+				
+				
 				preparaSql.executeUpdate();
 				connection.commit();
+				
+				if (modellogin.getFotoUser() != null && !modellogin.getFotoUser().isEmpty()) {
+					sqlUpdate = "update model_login set fotouser =?, extensaofotouser=? where id =?";
+					
+					preparaSql = connection.prepareStatement(sqlUpdate);
+					
+					preparaSql.setString(1, modellogin.getFotoUser());
+					preparaSql.setString(2, modellogin.getExtensaoFotoUser());
+					preparaSql.setLong(3, modellogin.getId());
+					
+					preparaSql.execute();
+					
+					connection.commit();
 			
 		}
-		
+		}
 			/*}else
 		{
 			//mensagem="As senhas digitadas, são diferentes. Por favor verifique.";
