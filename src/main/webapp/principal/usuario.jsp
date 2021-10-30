@@ -53,17 +53,17 @@
 															
 															<div class="form-group form-default input-group mb-3">
 																<div class="input-group-prepend">
-																	<c:if test="${modolLogin.fotouser != '' && modolLogin.fotouser != null}">
-																		<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modologin.id}">
-																		<img  id="fotoembase64" alt="Imagem Usuario" src="${modolLogin.fotouser}" width="70px">
-																		</a>
-																	</c:if>
+																<c:if test="${modologin.fotoUser != '' && modologin.fotoUser != null}">
+																	<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modologin.id}">
+																	<img  id="fotoembase64" alt="Imagem Usuario" src="${modologin.fotoUser}" width="70px">
+																	</a>
+																</c:if>
 																
-																	<c:if test="${modolLogin.fotouser == '' || modolLogin.fotouser == null}">
-																		<img alt="Imagem User" id="fotoembase64"  src="assets/images/user.png" width="70px">
-																	</c:if>
+																<c:if test="${modologin.fotoUser == '' || modologin.fotoUser == null}">
+																	<img id="fotoembase64" alt="Imagem Usuario" src="assets/images/default.png" width="70px">
+																</c:if>
 																</div>
-																<input id="filefoto" name="filefoto"  onchange="visualizarImg('fotoembase64', 'filefoto');" accept="image/*" type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
+																<input id="filefoto" name="filefoto" onchange="visualizarImg('fotoembase64', 'filefoto');" accept="image/*" type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
 															</div>
 															
 															 <div class="form-group form-default form-static-label">
@@ -160,8 +160,7 @@
                                                             <div class="form-group form-default form-static-label">
 														       <input type="radio" name="situacao" checked="checked" value="A"
 																 <%
-																 
-																 modelLogin = (ModelLogin) request.getAttribute("modologin");
+                                                             		modelLogin = (ModelLogin) request.getAttribute("modologin");
                                                                  
                                                              		if (modelLogin != null && modelLogin.getSituacao().equals("A")) {
 																		out.print(" ");
@@ -171,7 +170,7 @@
 															    	
 														       <input type="radio" name="situacao" value="I"
 														       <%
-														       	modelLogin = (ModelLogin) request.getAttribute("modologin");
+														       		modelLogin = (ModelLogin) request.getAttribute("modologin");
 	                                                             	if (modelLogin != null && modelLogin.getSituacao().equals("I")) {
 																		out.print(" ");
 																		out.print("checked=\"checked\"");
@@ -311,16 +310,16 @@
 	
 	function visualizarImg(fotoembase64, filefoto){
 		
-		var preview = document.getElementById(fotoembase64); /*Campo img html */
-		var fileuser = document.getElementById(filefoto).files[0];
+		var preview = document.getElementById(fotoembase64);
+		var fileUser = document.getElementById(filefoto).files[0];
 		var reader = new FileReader();
 		
 		reader.onloadend = function(){
-			preview.src = reader.result;/*Carrega foto na tela */
+			preview.src = reader.result;
 		};
 		
-		if(fileuser){
-			reader.readAsDataURL(fileuser);/*Preview da img */
+		if(fileUser){
+			reader.readAsDataURL(fileUser);
 			
 		}else{
 			

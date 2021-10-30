@@ -40,6 +40,7 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(8, modellogin.getPerfil());
 				preparaSql.setString(9, modellogin.getSituacao());
 				
+				
 				preparaSql.execute();
 				connection.commit();
 				
@@ -56,6 +57,8 @@ public class DaoUsuarioRepository {
 					
 					connection.commit();
 				}
+				
+				
 		
 		}else {
 			
@@ -70,8 +73,6 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(6, modellogin.getDtNascimento());
 				preparaSql.setString(7, modellogin.getPerfil());
 				preparaSql.setString(8, modellogin.getSituacao());
-				
-				
 				preparaSql.executeUpdate();
 				connection.commit();
 				
@@ -87,9 +88,10 @@ public class DaoUsuarioRepository {
 					preparaSql.execute();
 					
 					connection.commit();
+				}
 			
 		}
-		}
+		
 			/*}else
 		{
 			//mensagem="As senhas digitadas, são diferentes. Por favor verifique.";
@@ -219,6 +221,7 @@ public class DaoUsuarioRepository {
 			modellogin.setUserAdmin(resultadoConsultaUsuario.getBoolean("userAdmin"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
 			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
+			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
 
 		}
 		
@@ -246,7 +249,7 @@ public class DaoUsuarioRepository {
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
 			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
-
+			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
 		}
 		
 		return modellogin;
@@ -275,7 +278,7 @@ public class DaoUsuarioRepository {
 			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
 			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
-
+			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
 		}
 		
 		return modellogin;

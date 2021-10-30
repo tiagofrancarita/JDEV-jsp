@@ -95,6 +95,20 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				 
 			 }
+			 
+			 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
+				 
+				 String idUser = request.getParameter("id");
+				 
+				 ModelLogin modelLogin =  daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
+				 if (modelLogin.getFotoUser() != null && !modelLogin.getFotoUser().isEmpty()) {
+					 
+					 response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaoFotoUser());
+					 response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotoUser().split("\\,")[1]));
+					 
+				 }
+				 
+			 }
 			 else {
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.listarUsuario(super.getUserLogado(request));
 				 request.setAttribute("modelLogins", modelLogins);
@@ -140,17 +154,15 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		modellogin.setSituacao(situacao);
 		
 		if (ServletFileUpload.isMultipartContent(request)) {
-			
-			Part part = request.getPart("fileFoto"); /*Pega foto da tela*/
-			
-			if (part.getSize() > 0) {
-				byte[] foto = IOUtils.toByteArray(part.getInputStream()); /*Converte imagem para byte*/
-				String imagembase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," +  new Base64().encodeBase64String(foto);
-				
-				modellogin.setFotoUser(imagembase64);
+			Part part = request.getPart("filefoto");
+			if(part.getSize() > 0) {
+				byte[] foto = IOUtils.toByteArray(part.getInputStream()); // converte img para byte
+				String imagemEmBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base," + new Base64().encodeBase64String(foto);
+				//System.out.println(imagemEmBase64);
+				modellogin.setFotoUser(imagemEmBase64);
 				modellogin.setExtensaoFotoUser(part.getContentType().split("\\/")[1]);
+				
 			}
-			
 		}
 		
 			if (daoUsuarioRepository.validaLogin(modellogin.getLogin()) && modellogin.getId() == null) {
