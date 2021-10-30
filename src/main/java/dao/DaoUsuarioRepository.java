@@ -27,7 +27,8 @@ public class DaoUsuarioRepository {
 		
 			if (modellogin.isNovo()) {
 			
-				String sqlSalvar ="INSERT INTO model_login(nome, login, senha, confirmasenha, email, dtNascimento, usuario_id, perfil, situacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				String sqlSalvar ="INSERT INTO model_login(nome, login, senha, confirmasenha, email, dtNascimento, usuario_id, perfil, situacao, cep, logradouro, bairro, localidade, uf, numero, complemento) "
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 				PreparedStatement preparaSql = connection.prepareStatement(sqlSalvar);
 		
 				preparaSql.setString(1, modellogin.getNome());
@@ -39,6 +40,14 @@ public class DaoUsuarioRepository {
 				preparaSql.setLong(7, userLogado);
 				preparaSql.setString(8, modellogin.getPerfil());
 				preparaSql.setString(9, modellogin.getSituacao());
+				preparaSql.setString(10, modellogin.getCep());
+				preparaSql.setString(11, modellogin.getLogradouro());
+				preparaSql.setString(12, modellogin.getBairro());
+				preparaSql.setString(13, modellogin.getLocalidade());
+				preparaSql.setString(14, modellogin.getUf());
+				preparaSql.setString(15, modellogin.getNumero());
+				preparaSql.setString(16, modellogin.getComplemento());
+				
 				
 				
 				preparaSql.execute();
@@ -73,6 +82,14 @@ public class DaoUsuarioRepository {
 				preparaSql.setString(6, modellogin.getDtNascimento());
 				preparaSql.setString(7, modellogin.getPerfil());
 				preparaSql.setString(8, modellogin.getSituacao());
+				preparaSql.setString(9, modellogin.getCep());
+				preparaSql.setString(10, modellogin.getLogradouro());
+				preparaSql.setString(11, modellogin.getBairro());
+				preparaSql.setString(12, modellogin.getLocalidade());
+				preparaSql.setString(13, modellogin.getUf());
+				preparaSql.setString(14, modellogin.getNumero());
+				preparaSql.setString(15, modellogin.getComplemento());
+				
 				preparaSql.executeUpdate();
 				connection.commit();
 				
@@ -279,6 +296,7 @@ public class DaoUsuarioRepository {
 			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
 			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
 			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
+			modellogin.setExtensaoFotoUser(resultadoConsultaUsuario.getString("extensaoFotoUser"));
 		}
 		
 		return modellogin;

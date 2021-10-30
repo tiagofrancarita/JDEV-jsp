@@ -158,6 +158,49 @@
                                                             </div>
                                                             
                                                             <div class="form-group form-default form-static-label">
+														        <input onblur="pesquisaCep();" type="text" name="cep" id="cep" class="form-control" placeholder="CEP" required="required" autocomplete="off" value="${modologin.cep}" maxlength="9">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Cep:</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+														        <input type="text" name="logradouro" id="logradouro" class="form-control" placeholder="Logradouro" required="required" autocomplete="off" value="${modologin.logradouro}" maxlength="100">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Logradouro:</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+														        <input type="text" name="bairro" id="bairro" class="form-control" placeholder="Bairro" required="required" autocomplete="off" value="${modologin.bairro}" maxlength="100">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Bairro:</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+														        <input type="text" name="localidade" id="localidade" class="form-control" placeholder="Cidade" required="required" autocomplete="off" value="${modologin.localidade}" maxlength="100">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Cidade:</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+														        <input type="text" name="uf" id="uf" class="form-control" placeholder="UF" required="required" autocomplete="off" value="${modologin.uf}" maxlength="100">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">UF:</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+														        <input type="text" name="numero" id="numero" class="form-control" placeholder="Número" required="required" autocomplete="off" value="${modologin.numero}" maxlength="100">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Número:</label>
+                                                            </div>
+                                                            
+                                                            <div class="form-group form-default form-static-label">
+														        <input type="text" name="complemento" id="complemento" class="form-control" placeholder="Complemento" required="required" autocomplete="off" value="${modologin.complemento}" maxlength="100">
+                                                                <span class="form-bar"></span>
+                                                                <label class="float-label">Complemento:</label>
+                                                            </div>
+                                                            
+                                                            
+                                                            <div class="form-group form-default form-static-label">
 														       <input type="radio" name="situacao" checked="checked" value="A"
 																 <%
                                                              		modelLogin = (ModelLogin) request.getAttribute("modologin");
@@ -307,6 +350,32 @@
 			});
 		}
 	}*/
+	
+	function pesquisaCep(){
+		
+		var cep = $("#cep").val();
+		
+		//Consulta o webservice viacep.com.br/
+        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+        	
+        	 if (!("erro" in dados)){
+        		 //Atualiza os campos com os valores da consulta.
+                 $("#logradouro").val(dados.logradouro);
+                 $("#bairro").val(dados.bairro);
+                 $("#localidade").val(dados.localidade);
+                 $("#uf").val(dados.uf);
+        	 }
+        	 
+        	    else {
+                    //CEP pesquisado não foi encontrado.
+                    limpa_formulário_cep();
+                    alert("CEP não encontrado.");
+                }
+		});
+		
+		
+		
+	}
 	
 	function visualizarImg(fotoembase64, filefoto){
 		
