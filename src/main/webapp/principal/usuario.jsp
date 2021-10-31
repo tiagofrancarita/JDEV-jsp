@@ -1,5 +1,5 @@
 <%@page import="model.ModelLogin"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 	
 	<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
@@ -268,7 +268,25 @@
 												  </tbody>
 												</table>
 												</div>
-									<!--<span id="msg">${msg}</span>-->
+												
+												<nav aria-label="Page navigation example">
+												  <ul class="pagination justify-content-center">
+												 
+												 
+												 	 <%
+											     int totalPagina = (int) request.getAttribute("totalPagina");
+											    	for (int p = 0; p < totalPagina; p++){
+											    		String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (p * 5);  
+											    		out.print("<li class=\"page-item\"><a class=\"page-link\" href=\""+ url +"\">"+(p + 1)+"</a></li>");
+											    	}
+											   
+											   %>
+											
+												    
+												    
+												  </ul>
+												</nav>
+									
 									</div>
 									<!-- Page-body end -->
 								</div>

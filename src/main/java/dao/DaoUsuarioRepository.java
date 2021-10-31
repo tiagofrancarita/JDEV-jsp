@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,7 +137,7 @@ public class DaoUsuarioRepository {
 		
 		List<ModelLogin> busca = new ArrayList<ModelLogin>();
 		
-		String sqlBuscarUsuario ="select * from model_login where upper(nome)  like upper(?) and useradmin is false and usuario_id = ?";
+		String sqlBuscarUsuario ="select * from model_login where upper(nome)  like upper(?) and useradmin is false and usuario_id = ? limit 5 order by id";
 		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
 		buscar.setString(1,"%" + nome +"%");
 		buscar.setLong(2, userLogado);
@@ -152,6 +153,15 @@ public class DaoUsuarioRepository {
 			modelologin.setNome(resultadoBusca.getString("nome"));
 			modelologin.setPerfil(resultadoBusca.getString("perfil"));
 			modelologin.setSituacao(resultadoBusca.getString("situacao"));
+			modelologin.setCep(resultadoBusca.getString("cep"));
+			modelologin.setLogradouro(resultadoBusca.getString("logradouro"));
+			modelologin.setBairro(resultadoBusca.getString("bairro"));
+			modelologin.setLocalidade(resultadoBusca.getString("localidade"));
+			modelologin.setUf(resultadoBusca.getString("uf"));
+			modelologin.setNumero(resultadoBusca.getString("numero"));
+			modelologin.setComplemento(resultadoBusca.getString("complemento"));
+			
+			
 			
 			busca.add(modelologin);
 			
@@ -163,11 +173,35 @@ public class DaoUsuarioRepository {
 		
 	}
 	
-	public List<ModelLogin> listarUsuario(Long userLogado) throws Exception{
+	public int totalPagina(Long userLogado) throws SQLException {
+			
+			String sqlPagina="select count(1) as total from model_login  where usuario_id = " + userLogado;
+			PreparedStatement statement  = connection.prepareStatement(sqlPagina);
+			
+			ResultSet resultado = statement.executeQuery();
+			
+			resultado.next();
+			
+			Double cadastros = resultado.getDouble("total");
+			Double porPagina = 5.0;
+			Double pagina  = cadastros / porPagina;
+			Double resto = pagina % 2;
+			
+			if (resto > 0) {
+				
+				pagina ++;
+				
+			}
+			return pagina.intValue();
+
+
+			}
+	
+	public List<ModelLogin> listarUsuarioPaginacao(Long userLogado, Integer offset) throws Exception{
 		
 		List<ModelLogin> busca = new ArrayList<ModelLogin>();
 		
-		String sqlBuscarUsuario ="select * from model_login where useradmin is false and usuario_id ="+ userLogado +" order by id";
+		String sqlBuscarUsuario ="select * from model_login where useradmin is false and usuario_id = " + userLogado + " order by id offset "+offset+" limit 5";
 		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
 		
 		
@@ -184,6 +218,41 @@ public class DaoUsuarioRepository {
 			modelologin.setPerfil(resultadoBusca.getString("perfil"));
 			modelologin.setSituacao(resultadoBusca.getString("situacao"));
 			
+			
+			busca.add(modelologin);
+			
+			}
+			return busca;
+		}
+	
+	public List<ModelLogin> listarUsuario(Long userLogado) throws Exception{
+		
+		List<ModelLogin> busca = new ArrayList<ModelLogin>();
+		
+		String sqlBuscarUsuario ="select * from model_login where useradmin is false and usuario_id =" + userLogado + " order by id limit 5 ";
+		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
+		
+		
+		ResultSet resultadoBusca = buscar.executeQuery();
+		
+		while(resultadoBusca.next()) {
+			
+			ModelLogin modelologin = new ModelLogin();
+			modelologin.setId(resultadoBusca.getLong("id"));
+			modelologin.setEmail(resultadoBusca.getString("email"));
+			modelologin.setLogin(resultadoBusca.getString("login"));
+			modelologin.setNome(resultadoBusca.getString("nome"));
+			modelologin.setDtNascimento(resultadoBusca.getString("dtNascimento"));
+			modelologin.setPerfil(resultadoBusca.getString("perfil"));
+			modelologin.setSituacao(resultadoBusca.getString("situacao"));
+			modelologin.setCep(resultadoBusca.getString("cep"));
+			modelologin.setLogradouro(resultadoBusca.getString("logradouro"));
+			modelologin.setBairro(resultadoBusca.getString("bairro"));
+			modelologin.setLocalidade(resultadoBusca.getString("localidade"));
+			modelologin.setUf(resultadoBusca.getString("uf"));
+			modelologin.setNumero(resultadoBusca.getString("numero"));
+			modelologin.setComplemento(resultadoBusca.getString("complemento"));
+			
 			busca.add(modelologin);
 			
 			}
@@ -192,34 +261,41 @@ public class DaoUsuarioRepository {
 	
 	public ModelLogin consultaUsuario (String login, Long userLogado) throws Exception {
 		
-		ModelLogin modellogin = new ModelLogin();
+		ModelLogin modelologin = new ModelLogin();
 		
-		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') and useradmin is false and usuario_id = "+ userLogado +" order by id";
+		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') and useradmin is false and usuario_id = "+ userLogado +" limit 5 order by id";
 		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuario);
 		
 		ResultSet resultadoConsultaUsuario = preparaSql.executeQuery();
 		
 		while(resultadoConsultaUsuario.next()) {
 			
-			modellogin.setId(resultadoConsultaUsuario.getLong("id"));
-			modellogin.setNome(resultadoConsultaUsuario.getString("nome"));
-			modellogin.setLogin(resultadoConsultaUsuario.getString("login"));
-			modellogin.setSenha(resultadoConsultaUsuario.getString("senha"));
-			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
-			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
-			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
-			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
-			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
+			modelologin.setId(resultadoConsultaUsuario.getLong("id"));
+			modelologin.setNome(resultadoConsultaUsuario.getString("nome"));
+			modelologin.setLogin(resultadoConsultaUsuario.getString("login"));
+			modelologin.setSenha(resultadoConsultaUsuario.getString("senha"));
+			modelologin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
+			modelologin.setEmail(resultadoConsultaUsuario.getString("email"));
+			modelologin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modelologin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			modelologin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
+			modelologin.setCep(resultadoConsultaUsuario.getString("cep"));
+			modelologin.setLogradouro(resultadoConsultaUsuario.getString("logradouro"));
+			modelologin.setBairro(resultadoConsultaUsuario.getString("bairro"));
+			modelologin.setLocalidade(resultadoConsultaUsuario.getString("localidade"));
+			modelologin.setUf(resultadoConsultaUsuario.getString("uf"));
+			modelologin.setNumero(resultadoConsultaUsuario.getString("numero"));
+			modelologin.setComplemento(resultadoConsultaUsuario.getString("complemento"));
 
 		}
 		
-		return modellogin;
+		return modelologin;
 		
 	}
 	
 	public ModelLogin consultaUsuarioLogado(String login) throws Exception {
 		
-		ModelLogin modellogin = new ModelLogin();
+		ModelLogin modelologin = new ModelLogin();
 		
 		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') ";
 		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuario);
@@ -228,27 +304,34 @@ public class DaoUsuarioRepository {
 		
 		while(resultadoConsultaUsuario.next()) {
 			
-			modellogin.setId(resultadoConsultaUsuario.getLong("id"));
-			modellogin.setNome(resultadoConsultaUsuario.getString("nome"));
-			modellogin.setLogin(resultadoConsultaUsuario.getString("login"));
-			modellogin.setSenha(resultadoConsultaUsuario.getString("senha"));
-			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
-			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
-			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
-			modellogin.setUserAdmin(resultadoConsultaUsuario.getBoolean("userAdmin"));
-			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
-			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
-			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
+			modelologin.setId(resultadoConsultaUsuario.getLong("id"));
+			modelologin.setNome(resultadoConsultaUsuario.getString("nome"));
+			modelologin.setLogin(resultadoConsultaUsuario.getString("login"));
+			modelologin.setSenha(resultadoConsultaUsuario.getString("senha"));
+			modelologin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
+			modelologin.setEmail(resultadoConsultaUsuario.getString("email"));
+			modelologin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modelologin.setUserAdmin(resultadoConsultaUsuario.getBoolean("userAdmin"));
+			modelologin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			modelologin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
+			modelologin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
+			modelologin.setCep(resultadoConsultaUsuario.getString("cep"));
+			modelologin.setLogradouro(resultadoConsultaUsuario.getString("logradouro"));
+			modelologin.setBairro(resultadoConsultaUsuario.getString("bairro"));
+			modelologin.setLocalidade(resultadoConsultaUsuario.getString("localidade"));
+			modelologin.setUf(resultadoConsultaUsuario.getString("uf"));
+			modelologin.setNumero(resultadoConsultaUsuario.getString("numero"));
+			modelologin.setComplemento(resultadoConsultaUsuario.getString("complemento"));
 
 		}
 		
-		return modellogin;
+		return modelologin;
 		
 	}
 	
 	public ModelLogin consultaUsuario (String login) throws Exception {
 		
-		ModelLogin modellogin = new ModelLogin();
+		ModelLogin modelologin = new ModelLogin();
 		
 		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') and useradmin is false order by id";
 		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuario);
@@ -257,19 +340,26 @@ public class DaoUsuarioRepository {
 		
 		while(resultadoConsultaUsuario.next()) {
 			
-			modellogin.setId(resultadoConsultaUsuario.getLong("id"));
-			modellogin.setNome(resultadoConsultaUsuario.getString("nome"));
-			modellogin.setLogin(resultadoConsultaUsuario.getString("login"));
-			modellogin.setSenha(resultadoConsultaUsuario.getString("senha"));
-			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
-			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
-			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
-			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
-			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
-			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
+			modelologin.setId(resultadoConsultaUsuario.getLong("id"));
+			modelologin.setNome(resultadoConsultaUsuario.getString("nome"));
+			modelologin.setLogin(resultadoConsultaUsuario.getString("login"));
+			modelologin.setSenha(resultadoConsultaUsuario.getString("senha"));
+			modelologin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
+			modelologin.setEmail(resultadoConsultaUsuario.getString("email"));
+			modelologin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modelologin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			modelologin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
+			modelologin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
+			modelologin.setCep(resultadoConsultaUsuario.getString("cep"));
+			modelologin.setLogradouro(resultadoConsultaUsuario.getString("logradouro"));
+			modelologin.setBairro(resultadoConsultaUsuario.getString("bairro"));
+			modelologin.setLocalidade(resultadoConsultaUsuario.getString("localidade"));
+			modelologin.setUf(resultadoConsultaUsuario.getString("uf"));
+			modelologin.setNumero(resultadoConsultaUsuario.getString("numero"));
+			modelologin.setComplemento(resultadoConsultaUsuario.getString("complemento"));
 		}
 		
-		return modellogin;
+		return modelologin;
 		
 	}
 	
@@ -297,6 +387,13 @@ public class DaoUsuarioRepository {
 			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
 			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
 			modellogin.setExtensaoFotoUser(resultadoConsultaUsuario.getString("extensaoFotoUser"));
+			modellogin.setCep(resultadoConsultaUsuario.getString("cep"));
+			modellogin.setLogradouro(resultadoConsultaUsuario.getString("logradouro"));
+			modellogin.setBairro(resultadoConsultaUsuario.getString("bairro"));
+			modellogin.setLocalidade(resultadoConsultaUsuario.getString("localidade"));
+			modellogin.setUf(resultadoConsultaUsuario.getString("uf"));
+			modellogin.setNumero(resultadoConsultaUsuario.getString("numero"));
+			modellogin.setComplemento(resultadoConsultaUsuario.getString("complemento"));
 		}
 		
 		return modellogin;
