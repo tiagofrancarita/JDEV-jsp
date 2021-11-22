@@ -50,9 +50,6 @@ public class ServletLogin extends HttpServlet {
 			RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
 			redirecionar.forward(request, response);
 		}
-		
-		
-
 	}
 
 	/* Recebe os dados enviados por um formulário. */
@@ -60,13 +57,9 @@ public class ServletLogin extends HttpServlet {
 
 		String login = request.getParameter("login");
 		String senha = request.getParameter("senha");
-		
-		
-		
+
 		String url = request.getParameter("url");
-
 		try {
-
 			if (login == "" && senha == "") {
 
 				RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
@@ -79,9 +72,6 @@ public class ServletLogin extends HttpServlet {
 				modellogin.setLogin(login);
 				modellogin.setSenha(senha);
 				
-			
-				
-
 				if (daoLoginRepository.validarAutenticacao(modellogin)) {
 					
 					modellogin = daoUsuarioRepository.consultaUsuarioLogado(login);
@@ -90,36 +80,22 @@ public class ServletLogin extends HttpServlet {
 					request.getSession().setAttribute("nomeUsuario", modellogin.getNome());
 					request.getSession().setAttribute("perfil", modellogin.getPerfil());
 					
-					
-					
-
 					if (url == null || url.equals("null")) {
-
 						url = "principal/principal.jsp";
-
 					}
-
 					RequestDispatcher redirecionar = request.getRequestDispatcher(url);
 					redirecionar.forward(request, response);
-
 				} else {
-
 					RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
 					request.setAttribute("msg", "Username ou senha incorretos, favor verifique!");
 					redirecionar.forward(request, response);
-
 				}
-
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 			request.setAttribute("msg", e.getMessage());
 			redirecionar.forward(request, response);
-			
 		}
-
 	}
-
 }

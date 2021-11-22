@@ -12,8 +12,7 @@ public class SingleConnectionBanco {
 	private static String user = "postgres";
 	private static String senha = "MNGCC-04xRcxS3EWw7dz";
 	private static Connection connection = null;
-	
-	
+
 	public static Connection getConnection() {
 		return connection;
 	}

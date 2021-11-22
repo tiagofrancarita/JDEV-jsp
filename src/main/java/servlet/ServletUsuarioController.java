@@ -2,14 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.util.List;
-
-import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import dao.DaoLoginRepository;
 import dao.DaoUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -17,7 +10,6 @@ import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.Part;
 import model.ModelLogin;
 
 @MultipartConfig
@@ -99,18 +91,6 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				 
 			 }
-			 
-			 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
-				 
-				 String idUser = request.getParameter("id");
-				 
-				 ModelLogin modelLogin =  daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
-				 if (modelLogin.getFotoUser() != null && !modelLogin.getFotoUser().isEmpty()) {
-					 
-					 response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaoFotoUser());
-					 response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotoUser().split("\\,")[1]));
-					 
-				 }
 				 
 				 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
 					 Integer offset = Integer.parseInt(request.getParameter("pagina"));
@@ -122,7 +102,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				 }
 				 
-			 }
+			 
 			 else {
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.listarUsuario(super.getUserLogado(request));
 				 request.setAttribute("modelLogins", modelLogins);
@@ -182,20 +162,6 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		modellogin.setUf(uf);
 		modellogin.setNumero(numero);
 		modellogin.setComplemento(complemento);
-		
-		
-		
-		if (ServletFileUpload.isMultipartContent(request)) {
-			Part part = request.getPart("filefoto");
-			if(part.getSize() > 0) {
-				byte[] foto = IOUtils.toByteArray(part.getInputStream()); // converte img para byte
-				String imagemEmBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base," + new Base64().encodeBase64String(foto);
-				//System.out.println(imagemEmBase64);
-				modellogin.setFotoUser(imagemEmBase64);
-				modellogin.setExtensaoFotoUser(part.getContentType().split("\\/")[1]);
-				
-			}
-		}
 		
 			if (daoUsuarioRepository.validaLogin(modellogin.getLogin()) && modellogin.getId() == null) {
 				mensagem = "Já existe um usuário(a) com este login, favor tentar o cadastro com um novo login.";
