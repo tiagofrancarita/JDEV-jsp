@@ -90,6 +90,20 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				     request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 					 request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				 }
+			 
+				 else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
+					 
+					 String idUser = request.getParameter("id");
+					 
+					 ModelLogin modelLogin =  daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
+					 if (modelLogin.getFotoUser() != null && !modelLogin.getFotoUser().isEmpty()) {
+						 
+						 response.setHeader("Content-Disposition", "attachment;filename=arquivo." + modelLogin.getExtensaoFotoUser());
+						 response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotoUser().split("\\,")[1]));
+						 
+					 }
+					 
+				 }
 				 
 			 else {
 				 List<ModelLogin> modelLogins = daoUsuarioRepository.listarUsuario(super.getUserLogado(request));
@@ -150,12 +164,16 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		
 			if(ServletFileUpload.isMultipartContent(request)) {
 				Part part = request.getPart("fileFoto"); //Pega foto da tela
+				
+				if (part.getSize() > 0) {
+				
 				byte [] foto = IOUtils.toByteArray(part.getInputStream()); // Converte imagem para byte
 				String imagemBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64," + new Base64().encodeBase64String(foto);
 				
 				modellogin.setFotoUser(imagemBase64);
 				modellogin.setExtensaoFotoUser(part.getContentType().split("\\/")[1]);
 				//System.out.println(imagemBase64);
+				}
 			}
 			if (daoUsuarioRepository.validaLogin(modellogin.getLogin()) && modellogin.getId() == null) {
 				mensagem = "Já existe um usuário(a) com este login, favor tentar o cadastro com um novo login.";

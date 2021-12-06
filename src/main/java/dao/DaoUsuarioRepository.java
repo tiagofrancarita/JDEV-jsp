@@ -144,6 +144,7 @@ public class DaoUsuarioRepository {
 			}
 			return pagina.intValue();
 			}
+	
 	public List<ModelLogin> listarUsuarioPaginacao(Long userLogado, Integer offset) throws Exception{
 		
 		List<ModelLogin> busca = new ArrayList<ModelLogin>();

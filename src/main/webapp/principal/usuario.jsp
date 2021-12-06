@@ -52,11 +52,20 @@
 															
 														<div class="orm-group form-default input-group mb-4">
 															  <div class="input-group-prepend">
-															  	<img id="fotoembase64" alt="ImagemUsuario" src="" width="70px">
-															  </div>
 															  
+															     <c:if test="${modologin.fotoUser !='' && modologin.fotoUser != null }"> <!-- Se -->
+															  	      <a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modologin.id}">
+															  	      <img id="fotoembase64" alt="ImagemUsuario" src="${modologin.fotoUser}" width="70px">
+															     		</a>
+															     </c:if>
+															     
+															     <c:if test="${modologin.fotoUser =='' || modologin.fotoUser == null }"> <!-- Se nao -->
+															     	<img id="fotoembase64"  alt="ImagemUsuario" src="assets/images/sem-foto.png" width="70px">
+															     </c:if>
+															     
+															  </div>
 															  <input accept="image/*" name="fileFoto" id="fileFoto" type="file" onchange="visualizarImg('fotoembase64', 'fileFoto')" class="form-control-file" style="margin-top: 15px; margin-left: 5px;">
-														</div>
+															</div>
 															
 															 <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="id" id="id" class="form-control" placeholder="id"  readonly="readonly" value="${modologin.id}">
