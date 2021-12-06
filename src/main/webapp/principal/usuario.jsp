@@ -47,24 +47,16 @@
 													<div class="card-block">
 													<h3 class="sub-title" align="center">Cadastro de Usuários</h3>
 													
-														<form class="form-material" action="<%=request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" enctype="multipart/form-data">
-														
+														<form class="form-material" enctype="multipart/form-data" action="<%=request.getContextPath() %>/ServletUsuarioController" method="post" id="formUser" >
 															<input type="hidden" id="acao" name="acao" value="">
 															
-															<div class="form-group form-default input-group mb-3">
-																<div class="input-group-prepend">
-																<c:if test="${modologin.fotoUser != '' && modologin.fotoUser != null}">
-																	<a href="<%= request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modologin.id}">
-																	<img  id="fotoembase64" alt="Imagem Usuario" src="${modologin.fotoUser}" width="70px">
-																	</a>
-																</c:if>
-																
-																<c:if test="${modologin.fotoUser == '' || modologin.fotoUser == null}">
-																	<img id="fotoembase64" alt="Imagem Usuario" src="assets/images/default.png" width="70px">
-																</c:if>
-																</div>
-																<input id="filefoto" name="filefoto" onchange="visualizarImg('fotoembase64', 'filefoto');" accept="image/*" type="file" class="form-control-file" style="margin-top: 15px; margin-left: 5px; ">
-															</div>
+														<div class="orm-group form-default input-group mb-4">
+															  <div class="input-group-prepend">
+															  	<img id="fotoembase64" alt="ImagemUsuario" src="" width="70px">
+															  </div>
+															  
+															  <input accept="image/*" name="fileFoto" id="fileFoto" type="file" onchange="visualizarImg('fotoembase64', 'fileFoto')" class="form-control-file" style="margin-top: 15px; margin-left: 5px;">
+														</div>
 															
 															 <div class="form-group form-default form-static-label">
                                                                 <input type="text" name="id" id="id" class="form-control" placeholder="id"  readonly="readonly" value="${modologin.id}">
@@ -394,7 +386,7 @@
 	}
 	
 	function visualizarImg(fotoembase64, filefoto){
-		
+	
 		var preview = document.getElementById(fotoembase64);
 		var fileUser = document.getElementById(filefoto).files[0];
 		var reader = new FileReader();

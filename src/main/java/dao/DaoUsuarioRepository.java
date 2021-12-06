@@ -77,12 +77,12 @@ public class DaoUsuarioRepository {
 				connection.commit();
 				
 				if (modellogin.getFotoUser() != null && !modellogin.getFotoUser().isEmpty()) {
-					sqlUpdate = "update model_login set fotouser =?, extensaofotouser=? where id =?";
+					sqlUpdate = "update model_login set fotouser =?, extensaofotouser=? where login =?";
 					
 					preparaSql = connection.prepareStatement(sqlUpdate);
 					preparaSql.setString(1, modellogin.getFotoUser());
 					preparaSql.setString(2, modellogin.getExtensaoFotoUser());
-					preparaSql.setLong(3, modellogin.getId());
+					preparaSql.setString(3, modellogin.getLogin());
 					preparaSql.execute();
 					connection.commit();
 				}
