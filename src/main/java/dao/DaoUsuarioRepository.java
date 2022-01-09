@@ -16,6 +16,66 @@ public class DaoUsuarioRepository {
 	public DaoUsuarioRepository() {
 		connection = SingleConnectionBanco.getConnection();
 	}
+	
+public List<ModelLogin> consultaUsuarioListOffSet(String nome, Long userLogado, int offset) throws Exception {
+		
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+		
+		String sql = "select * from model_login  where upper(nome) like upper(?) and useradmin is false and usuario_id = ? offset "+offset+" limit 5";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, "%" + nome + "%");
+		statement.setLong(2, userLogado);
+		
+		ResultSet resultado = statement.executeQuery();
+		
+		while (resultado.next()) { /*percorrer as linhas de resultado do SQL*/
+			
+			ModelLogin modelLogin = new ModelLogin();
+			
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setNome(resultado.getString("nome"));
+			//modelLogin.setSenha(resultado.getString("senha"));
+			modelLogin.setPerfil(resultado.getString("perfil"));
+			
+			
+			retorno.add(modelLogin);
+		}
+		
+		
+		return retorno;
+	}
+	
+public int consultaUsuarioListTotalPaginaPaginacao(String nome, Long userLogado) throws Exception {
+		
+		
+		String sql = "select count(1) as total from model_login  where upper(nome) like upper(?) and useradmin is false and usuario_id = ? ";
+	
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1, "%" + nome + "%");
+		statement.setLong(2, userLogado);
+		
+		ResultSet resultado = statement.executeQuery();
+		
+		resultado.next();
+		
+		Double cadastros = resultado.getDouble("total");
+		
+		Double porpagina = 5.0;
+		
+		Double pagina = cadastros / porpagina;
+		
+		Double resto = pagina % 2;
+		
+		if (resto > 0) {
+			pagina ++;
+		}
+		
+		return pagina.intValue();
+		
+	}
+	
 	public ModelLogin gravarUsuario(ModelLogin modellogin, Long userLogado) throws Exception {
 		//try {
 		//String mensagem ="Cadastro realizado com sucesso";
@@ -94,12 +154,36 @@ public class DaoUsuarioRepository {
 		connection.commit();
 	}
 	
+public int buscarUsuarioPaginaPaginacao(String nome, Long userLogado) throws Exception{
+		
+		
+		String sqlBuscarUsuario ="select count(1) as total from model_login where upper(nome)  like upper(?) and useradmin is false and usuario_id = ?";
+		
+		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
+		buscar.setString(1, "%" + nome +"%" );
+		buscar.setLong(2, userLogado);
+		
+		ResultSet resultadoBusca = buscar.executeQuery();
+		resultadoBusca.next();
+		
+		Double cadastros = resultadoBusca.getDouble("total");
+		Double porPagina = 5.0;
+		Double pagina  = cadastros / porPagina;
+		
+		Double resto = pagina % 2;
+		if (resto > 0) {
+			pagina ++;
+		}
+		
+		return pagina.intValue();
+		}
+
 	public List<ModelLogin> buscarUsuario(String nome, Long userLogado) throws Exception{
 		
 		List<ModelLogin> busca = new ArrayList<ModelLogin>();
-		String sqlBuscarUsuario ="select * from model_login where upper(nome)  like upper(?) and useradmin is false and usuario_id = ? limit 5 order by id";
+		String sqlBuscarUsuario ="select * from model_login where upper(nome)  like upper(?) and useradmin is false and usuario_id = ? limit 5 ";
 		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
-		buscar.setString(1,"%" + nome +"%");
+		buscar.setString(1, "%" + nome +"%" );
 		buscar.setLong(2, userLogado);
 		ResultSet resultadoBusca = buscar.executeQuery();
 		
@@ -127,7 +211,9 @@ public class DaoUsuarioRepository {
 			
 			String sqlPagina="select count(1) as total from model_login  where usuario_id = " + userLogado;
 			PreparedStatement statement  = connection.prepareStatement(sqlPagina);
+			
 			ResultSet resultado = statement.executeQuery();
+			
 			resultado.next();
 			Double cadastros = resultado.getDouble("total");
 			Double porPagina = 5.0;
@@ -142,7 +228,7 @@ public class DaoUsuarioRepository {
 	public List<ModelLogin> listarUsuarioPaginacao(Long userLogado, Integer offset) throws Exception{
 		
 		List<ModelLogin> busca = new ArrayList<ModelLogin>();
-		String sqlBuscarUsuario ="select * from model_login where useradmin is false and usuario_id = " + userLogado + " order by id offset "+offset+" limit 5";
+		String sqlBuscarUsuario ="select * from model_login where useradmin is false and usuario_id = " + userLogado + " order by id offset "+offset+" limit 5 ";
 		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
 		ResultSet resultadoBusca = buscar.executeQuery();
 
@@ -165,7 +251,7 @@ public class DaoUsuarioRepository {
 	public List<ModelLogin> listarUsuario(Long userLogado) throws Exception{
 		
 		List<ModelLogin> busca = new ArrayList<ModelLogin>();
-		String sqlBuscarUsuario ="select * from model_login where useradmin is false and usuario_id =" + userLogado + " order by id limit 5 ";
+		String sqlBuscarUsuario ="select * from model_login where useradmin is false and usuario_id =" + userLogado + "  limit 5 ";
 		PreparedStatement  buscar = connection.prepareStatement(sqlBuscarUsuario);
 		ResultSet resultadoBusca = buscar.executeQuery();
 		
@@ -195,7 +281,7 @@ public class DaoUsuarioRepository {
 	public ModelLogin consultaUsuario (String login, Long userLogado) throws Exception {
 		
 		ModelLogin modelologin = new ModelLogin();
-		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') and useradmin is false and usuario_id = "+ userLogado +" limit 5";
+		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') and useradmin is false and usuario_id = "+ userLogado +" limit 5 ";
 		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuario);
 		ResultSet resultadoConsultaUsuario = preparaSql.executeQuery();
 
@@ -258,7 +344,7 @@ public class DaoUsuarioRepository {
 	public ModelLogin consultaUsuario (String login) throws Exception {
 		
 		ModelLogin modelologin = new ModelLogin();
-		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') and useradmin is false order by id";
+		String sqlConsultaUsuario = "select * from model_login where upper(login) = upper('"+login+"') and useradmin is false";
 		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuario);
 		ResultSet resultadoConsultaUsuario = preparaSql.executeQuery();
 		

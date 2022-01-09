@@ -349,11 +349,14 @@
 	
 	<script type="text/javascript">
 	
-	/**
+	
+	
+/*
 	function deleteAjax() {
 		if(confirm('Deseja realmente excluir o usuário(a) ?')){
 			var urlAction = document.getElementById('formUser').action;
 			var idUser = document.getElementById('id').value;
+			
 			$.ajax({
 				method: "get",
 				url: urlAction,
@@ -367,6 +370,54 @@
 			});
 		}
 	}*/
+	
+	function buscarUsuario() {
+	    
+	    var nomeBusca = document.getElementById('nomeBusca').value;
+	    
+	    if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != ''){ /*Validando que tem que ter valor pra buscar no banco*/
+		
+		 var urlAction = document.getElementById('formUser').action;
+		
+		 $.ajax({
+		     
+		     method: "get",
+		     url : urlAction,
+		     data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
+		     success: function (response, textStatus, xhr) {
+			 
+			 var json = JSON.parse(response);
+			 
+			 
+			 $('#tabelaresultados > tbody > tr').remove();
+			 $("#ulPaginacaoUserAjax > li").remove();
+			 
+			  for(var p = 0; p < json.length; p++){
+			      $('#tabelaresultados > tbody').append('<tr> <td>'+json[p].id+'</td> <td> '+json[p].nome+'</td> <td> '+json[p].email+'</td> <td><button onclick="verEditar('+json[p].id+')" type="button" class="btn btn-info"> Ver | Editar </button></td></tr>');
+			  }
+			  
+			  document.getElementById('totalResultados').textContent = 'Resultados: ' + json.length;
+			  
+			    var totalPagina = xhr.getResponseHeader("totalPagina");
+		
+			  
+			    
+				  for (var p = 0; p < totalPagina; p++){
+				      
+				      var url = 'nomeBusca=' + nomeBusca + '&acao=buscarUserAjaxPage&pagina='+ (p * 5);
+				      
+				   
+				      $("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>');
+				      
+				  }
+			 
+		     }
+		     
+		 }).fail(function(xhr, status, errorThrown){
+		    alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
+		 });
+	    }
+	}
 	
 	function pesquisaCep(){
 		
@@ -417,58 +468,6 @@
 		
 		var urlAction = document.getElementById('formUser').action;
 		window.location.href = urlAction + '?acao=buscarEditar&id='+id;
-
-		}
-
-		function buscarUsuario() {
-
-			var nomeBusca = document.getElementById('nomeBusca').value;
-
-			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') { /*Validando que tem que ter valor pra buscar no banco*/
-
-				var urlAction = document.getElementById('formUser').action;
-
-				$
-						.ajax(
-								{
-
-									method : "get",
-									url : urlAction,
-									data : "nomeBusca=" + nomeBusca
-											+ '&acao=buscarUserAjax',
-									success : function(response) {
-
-										var json = JSON.parse(response);
-
-										$('#tabelaresultados > tbody > tr').remove;
-										//
-										for (var p = 0; p < json.length; p++) {
-											$('#tabelaresultados > tbody')
-													.append(
-															'<tr> <td>'
-																	+ json[p].id
-																	+ '</td> <td>'
-																	+ json[p].nome
-																	+ '</td> <td>'
-																	+ json[p].email
-																	+ '</td> <td><button type="button" class="btn btn-info" onclick="verEditar('
-																	+ json[p].id
-																	+ ');">Ver</button></td> </tr>');
-										}
-
-										document
-												.getElementById('totalResultado').textContent = 'Usuários:'
-												+ json.length;
-
-									}
-
-								}).fail(
-								function(xhr, status, errorThrown) {
-									alert('Erro ao buscar usuário por nome: '
-											+ xhr.responseText);
-								});
-
-			}
 
 		}
 
