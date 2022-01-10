@@ -13,6 +13,7 @@ import model.ModelLogin;
 public class DaoUsuarioRepository {
 	
 	private Connection connection;
+	
 	public DaoUsuarioRepository() {
 		connection = SingleConnectionBanco.getConnection();
 	}
@@ -164,6 +165,7 @@ public int buscarUsuarioPaginaPaginacao(String nome, Long userLogado) throws Exc
 		buscar.setLong(2, userLogado);
 		
 		ResultSet resultadoBusca = buscar.executeQuery();
+		
 		resultadoBusca.next();
 		
 		Double cadastros = resultadoBusca.getDouble("total");
@@ -370,6 +372,38 @@ public int buscarUsuarioPaginaPaginacao(String nome, Long userLogado) throws Exc
 		}
 		
 		return modelologin;
+		
+	}
+public ModelLogin consultaUsuarioID (Long id) throws Exception {
+		
+		ModelLogin modellogin = new ModelLogin();
+		String sqlConsultaUsuarioiD = "select * from model_login where id = ? and useradmin is false";
+		PreparedStatement preparaSql = connection.prepareStatement(sqlConsultaUsuarioiD);
+		preparaSql.setLong(1, (id));
+		ResultSet resultadoConsultaUsuario = preparaSql.executeQuery();
+		
+		while(resultadoConsultaUsuario.next()) {
+			modellogin.setId(resultadoConsultaUsuario.getLong("id"));
+			modellogin.setNome(resultadoConsultaUsuario.getString("nome"));
+			modellogin.setLogin(resultadoConsultaUsuario.getString("login"));
+			modellogin.setSenha(resultadoConsultaUsuario.getString("senha"));
+			modellogin.setConfirmaSenha(resultadoConsultaUsuario.getString("confirmaSenha"));
+			modellogin.setEmail(resultadoConsultaUsuario.getString("email"));
+			modellogin.setDtNascimento(resultadoConsultaUsuario.getString("dtNascimento"));
+			modellogin.setPerfil(resultadoConsultaUsuario.getString("perfil"));
+			modellogin.setSituacao(resultadoConsultaUsuario.getString("situacao"));
+			modellogin.setFotoUser(resultadoConsultaUsuario.getString("fotoUser"));
+			modellogin.setExtensaoFotoUser(resultadoConsultaUsuario.getString("extensaoFotoUser"));
+			modellogin.setCep(resultadoConsultaUsuario.getString("cep"));
+			modellogin.setLogradouro(resultadoConsultaUsuario.getString("logradouro"));
+			modellogin.setBairro(resultadoConsultaUsuario.getString("bairro"));
+			modellogin.setLocalidade(resultadoConsultaUsuario.getString("localidade"));
+			modellogin.setUf(resultadoConsultaUsuario.getString("uf"));
+			modellogin.setNumero(resultadoConsultaUsuario.getString("numero"));
+			modellogin.setComplemento(resultadoConsultaUsuario.getString("complemento"));
+		}
+		
+		return modellogin;
 		
 	}
 	

@@ -78,8 +78,6 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				 response.addHeader("totalPagina", ""+ daoUsuarioRepository.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
 				 response.getWriter().write(json);
 				 
-			 	
-				
 			 }else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
 				 
 				 String id = request.getParameter("id");
